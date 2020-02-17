@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getStorageToken } from './utils';
+import { getStorageToken, debug } from './utils';
 
 let url = '';
 let title = '';
@@ -7,7 +7,7 @@ let title = '';
 // receive data from content-script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const { url: recUrl, title: recTitle } = request;
-  console.log(`收到 title: ${recTitle}, url: ${recUrl}`);
+  debug(`收到 title: ${recTitle}, url: ${recUrl}`);
   url = recUrl;
   title = recTitle;
   sendResponse(`receive data: ${JSON.stringify(request)}`);
@@ -16,10 +16,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 function star() {
   getStorageToken((token) => {
     if (!url || !title || !token) {
-      console.log(`no url or title or token: url: ${url}, title: ${title}, token: ${token}`);
+      debug(`no url or title or token: url: ${url}, title: ${title}, token: ${token}`);
       return;
     }
-    console.log('star 正在发送');
+    debug('star 正在发送');
 
     axios({
       method: 'post',
@@ -35,12 +35,12 @@ function star() {
     })
       .then((response) => {
         if (response.data) {
-          console.log('star 发送成功');
+          debug('star 发送成功');
         }
       })
-      .catch((err) => {
-        console.log('err', err);
-        console.log('star 发送失败');
+      .catch((err: Error) => {
+        debug('star 发送失败');
+        debug('err', err);
       });
   });
 }

@@ -1,10 +1,16 @@
 import { StorageItem } from './types';
 
+export function debug(...args: any) {
+  console.group('%c Chrome Extension Star: ', 'color: white;background:#1791f2;');
+  console.debug('%clog:', 'color: red', ...args);
+  console.groupEnd();
+}
+
 export function getStorageToken(callback?:(token:string) => void): void {
   // get enabled, default value is true
   chrome.storage.sync.get({ token: '' }, (item: StorageItem) => {
     const { token } = item;
-    console.log(`get token: ${token}`);
+    debug(`get token: ${token}`);
     if (callback) {
       callback(token);
     }
@@ -13,7 +19,7 @@ export function getStorageToken(callback?:(token:string) => void): void {
 
 export function setStorageToken(token:string, callback:Function) {
   chrome.storage.sync.set({ token }, () => {
-    console.log(`set token: ${token}`);
+    debug(`set token: ${token}`);
     if (callback) {
       callback();
     }

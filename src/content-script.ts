@@ -1,3 +1,5 @@
+import { debug } from './utils';
+
 window.addEventListener('load', () => {
   const { href: url } = window.location;
   const { title } = document;
@@ -7,6 +9,6 @@ window.addEventListener('load', () => {
     url,
     title,
   }, (response) => {
-    console.log(`receive response: ${response}`);
+    debug(`receive response: ${response}`);
   });
 });
